@@ -3,7 +3,7 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "project-nucleus"
-version = "0.5.0"
+version = "0.6.0"
 description = "An educational neural learning engine built from first principles."
 readme = "README.md"
 requires-python = ">=3.10"
