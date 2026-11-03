@@ -1,0 +1,59 @@
+
+name: Project Nucleus CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Python checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy pytest
+
+          if [ -f requirements.txt ]; then
+            python -m pip install -r requirements.txt
+          fi
+
+          if [ -f pyproject.toml ]; then
+            python -m pip install -e .
+          fi
+
+      - name: Check Python syntax
+        run: |
+          if [ -d nucleus ]; then
+            python -m compileall -q nucleus
+          else
+            echo "No nucleus package yet; skipping."
+          fi
+
+      - name: Run tests
+        run: |
+          if [ -d tests ] && find tests -type f -name 'test_*.py' -print -quit | grep -q .; then
+            python -m pytest -q
+          else
+            echo "No tests found yet; skipping pytest."
+          fi
