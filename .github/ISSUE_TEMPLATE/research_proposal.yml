@@ -1,0 +1,146 @@
+
+name: Research Proposal
+description: Propose a research experiment, hypothesis, or neural architecture investigation.
+title: "[RESEARCH] "
+labels:
+  - research
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Welcome, researcher!
+
+        Project Nucleus encourages reproducible experiments and evidence-driven
+        research. Please explain your hypothesis, methodology, and evaluation plan.
+
+  - type: input
+    id: research_title
+    attributes:
+      label: Research Title
+      placeholder: A concise title for your research.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Research Domain
+      options:
+        - Neural Network Fundamentals
+        - Automatic Differentiation
+        - Optimization Algorithms
+        - Language Models
+        - Computer Vision
+        - Audio Intelligence
+        - Multimodal Learning
+        - Video Intelligence
+        - Model Scaling
+        - Training Efficiency
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Research Hypothesis
+      description: What do you want to investigate or demonstrate?
+      placeholder: |
+        We hypothesize that...
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Research Motivation
+      description: Why is this research important for Project Nucleus?
+    validations:
+      required: true
+
+  - type: textarea
+    id: background
+    attributes:
+      label: Background and Related Work
+      description: Include relevant papers, publications, or existing implementations.
+      placeholder: |
+        Paper:
+        Authors:
+        DOI or URL:
+        Existing approaches:
+
+  - type: textarea
+    id: methodology
+    attributes:
+      label: Proposed Methodology
+      description: Explain the architecture, algorithms, and experimental procedure.
+      placeholder: |
+        1. Dataset preparation
+        2. Model architecture
+        3. Training procedure
+        4. Evaluation
+    validations:
+      required: true
+
+  - type: textarea
+    id: datasets
+    attributes:
+      label: Dataset and Data Sources
+      description: Identify the dataset, source, license, and preprocessing requirements.
+    validations:
+      required: true
+
+  - type: textarea
+    id: evaluation
+    attributes:
+      label: Evaluation Metrics
+      description: How will you measure success?
+      placeholder: |
+        - Accuracy or validation loss
+        - Training throughput
+        - Memory consumption
+        - Latency
+    validations:
+      required: true
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Compute and Resource Requirements
+      description: Estimate CPU, GPU, RAM, storage, and training requirements.
+      placeholder: Describe expected hardware and compute budget.
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Outcomes
+      description: What results do you expect? Include possible limitations.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproducibility
+    attributes:
+      label: Reproducibility Plan
+      description: Explain how other contributors can reproduce the experiment.
+      placeholder: Include configuration, random seeds, dependencies, and commands.
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Add papers, documentation, repositories, or other sources.
+
+  - type: checkboxes
+    id: verification
+    attributes:
+      label: Research Integrity
+      options:
+        - label: I have reviewed existing research and related issues.
+          required: true
+        - label: I will report experimental results honestly.
+          required: true
+        - label: I will respect dataset and third-party licenses.
+          required: true
+        - label: I understand that this proposal requires maintainer review.
+          required: true
