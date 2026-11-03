@@ -7,3 +7,21 @@ __all__ = [
     "Embedding", "Linear", "Module", "Parameter", "ReLU", "Sequential",
     "Sigmoid", "Tanh", "CharacterLanguageModel",
 ]
+from nucleus.nn.attention import (
+    MultiHeadAttention,
+    scaled_dot_product_attention,
+    softmax,
+)
+from nucleus.nn.transformer import (
+    FeedForward,
+    LayerNorm,
+    PositionalEncoding,
+    TransformerBlock,
+)
+"MultiHeadAttention",
+"scaled_dot_product_attention",
+"softmax",
+"FeedForward",
+"LayerNorm",
+"PositionalEncoding",
+"TransformerBlock",
