@@ -1,6 +1,7 @@
 """Project Nucleus: an educational neural learning engine."""
 
-from nucleus.core.tensor import Tensor
+from nucleus.core.tensor import Tensor, no_grad
+from nucleus.nn.parameter import Parameter
 
-__version__ = "0.2.0"
-__all__ = ["Tensor", "__version__"]
+__version__ = "0.3.0"
+__all__ = ["Tensor", "Parameter", "no_grad", "__version__"]
