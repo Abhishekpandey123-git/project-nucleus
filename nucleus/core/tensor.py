@@ -177,14 +177,15 @@ class Tensor:
             out._backward = backward
         return out
 
+
     def __matmul__(self, other: object) -> Tensor:
         rhs = other if isinstance(other, Tensor) else Tensor(other)
-        if self.ndim != 2 or rhs.ndim != 2:
-            raise ValueError("matmul supports 2-D matrices only.")
-        if self.shape[1] != rhs.shape[0]:
+        if self.ndim < 2 or rhs.ndim < 2:
+            raise ValueError("matmul requires operands with at least 2 dimensions.")
+        if self.shape[-1] != rhs.shape[-2]:
             raise ValueError(f"Incompatible matrix shapes: {self.shape} and {rhs.shape}")
         requires = _operation_requires_grad(self, rhs)
-        out = Tensor(self.data @ rhs.data, requires)
+        out = Tensor(np.matmul(self.data, rhs.data), requires)
         out._parents = (self, rhs) if requires else ()
         out._op = "matmul"
 
@@ -193,10 +194,46 @@ class Tensor:
                 return
             if self.requires_grad:
                 assert self.grad is not None
-                self.grad += out.grad @ rhs.data.T
+                self.grad += _unbroadcast(np.matmul(out.grad, np.swapaxes(rhs.data, -1, -2)), self.shape)
             if rhs.requires_grad:
                 assert rhs.grad is not None
-                rhs.grad += self.data.T @ out.grad
+                rhs.grad += _unbroadcast(np.matmul(np.swapaxes(self.data, -1, -2), out.grad), rhs.shape)
+
+        if requires:
+            out._backward = backward
+        return out
+
+    def reshape(self, *shape: int) -> Tensor:
+        if len(shape) == 1 and isinstance(shape[0], (tuple, list)):
+            shape = tuple(shape[0])
+        requires = _operation_requires_grad(self)
+        out = Tensor(self.data.reshape(tuple(shape)), requires)
+        out._parents = (self,) if requires else ()
+        out._op = "reshape"
+
+        def backward() -> None:
+            if self.requires_grad and out.grad is not None:
+                assert self.grad is not None
+                self.grad += out.grad.reshape(self.shape)
+
+        if requires:
+            out._backward = backward
+        return out
+
+    def transpose(self, *axes: int) -> Tensor:
+        permutation = tuple(axes) if axes else tuple(reversed(range(self.ndim)))
+        if sorted(permutation) != list(range(self.ndim)):
+            raise ValueError("axes must be a permutation of all tensor dimensions.")
+        inverse = tuple(np.argsort(permutation))
+        requires = _operation_requires_grad(self)
+        out = Tensor(self.data.transpose(permutation), requires)
+        out._parents = (self,) if requires else ()
+        out._op = "transpose"
+
+        def backward() -> None:
+            if self.requires_grad and out.grad is not None:
+                assert self.grad is not None
+                self.grad += out.grad.transpose(inverse)
 
         if requires:
             out._backward = backward

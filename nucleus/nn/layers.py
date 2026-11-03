@@ -45,8 +45,11 @@ class Linear(Module):
         self.bias = Parameter(np.zeros((1, out_features)))
 
     def __call__(self, inputs: Tensor) -> Tensor:
-        if inputs.ndim != 2 or inputs.shape[1] != self.weight.shape[0]:
-            raise ValueError(f"Expected input shape (batch, {self.weight.shape[0]}), got {inputs.shape}.")
+        if inputs.ndim < 2 or inputs.shape[-1] != self.weight.shape[0]:
+            raise ValueError(
+                f"Expected input with final dimension {self.weight.shape[0]}, "
+                f"got {inputs.shape}."
+            )
         return inputs @ self.weight + self.bias
 
 

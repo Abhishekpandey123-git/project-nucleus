@@ -1,0 +1,14 @@
+Apply in the repository root:
+1. python apply_v05.py
+2. Change pyproject.toml version to 0.5.0.
+3. Add exports to nucleus/nn/__init__.py:
+   from nucleus.nn.attention import MultiHeadAttention, scaled_dot_product_attention, softmax
+   from nucleus.nn.transformer import FeedForward, LayerNorm, PositionalEncoding, TransformerBlock
+   Add all seven names to __all__.
+4. Validate:
+   python -m compileall -q nucleus tests
+   python -m pytest -v
+   python examples/attention_demo.py
+
+Expected: 10 new tests; 53 total if the v0.4 suite is intact.
+Do not commit until all checks pass.
