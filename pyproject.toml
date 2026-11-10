@@ -3,13 +3,14 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "project-nucleus"
-version = "0.6.0"
+version = "1.0.0"
 description = "An educational neural learning engine built from first principles."
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["numpy>=1.24"]
 [project.optional-dependencies]
 dev = ["pytest>=7.4"]
+vision = ["Pillow>=10"]
 [tool.setuptools.packages.find]
 include = ["nucleus*"]
 [tool.pytest.ini_options]
